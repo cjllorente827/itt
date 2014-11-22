@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/reset.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/style.css' %}" />
+    {% block stylesheets %}{%endblock%}
+
+    <script src="{% static 'stylesheets/js/jQuery_1_11.js' %}" ></script>
+
+    <title>{% block title %}This page needs a title{% endblock %}</title>
+</head>
+
+<body>
+
+    <div id="main">
+
+        <div id="header" class="panel">
+            <h1>ITT:</h1>
+
+            <div class="">
+                {% if user.is_authenticated %}
+                    {{ sidebar }}
+                {% else %}
+                    <form action="/account/login" method="post">
+                        {% csrf_token %}
+                        {{ sidebar }}
+                        <input type="submit" value="Submit" />
+                    </form>    
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="side panel">
+            <ul>
+                <li><a href="/threads/">My Threads</a></li>
+                <li><a href="/threads/public">Public Threads</a></li>
+                <li><a href="#">Friends</a></li>
+                <li><a href="#">Recent Activity</a></li>
+                <li><a href="/account/">Profile</a></li>
+            </ul>
+        </div>
+        <!--<span style="clear:both;"></span>-->
+        
+        {% block content %}{% endblock %}
+</body>
+</html>

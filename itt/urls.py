@@ -10,3 +10,4 @@ urlpatterns = patterns('',
 	url(r'^u/', include('user.urls', namespace="user")),
     url(r'^admin/', include(admin.site.urls)),
 )
+

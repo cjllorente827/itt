@@ -7,23 +7,32 @@
 		threadId;
 
 	function sendMessage(){
+		var text = messageTextArea.val()
+		if(text == "") return;
+
 		$.ajax({
 			method : "POST",
-			url : threadId + "/message",
+			url : "api/message",
 			contentType: "application/json",
 			data: JSON.stringify({
-				"messageBody": messageTextArea.val()
+				"threadId" : threadId,
+				"messageBody": text
 			}),
 			success : function(response, status, xhr) {
-				console.debug("Success");
+				refresh(response);
 			}
 		});
+	}
+
+	function refresh(messageData){
+		messageList.html(messageData);
 	}
 
 	$(function() {
 		threadId 			= $('#threadId').val();
 		messageTextArea 	= $('#message');
 		messageSendButton 	= $('#messageSend');
+		messageList 		= $('#messageList');
 		messageSendButton.click(sendMessage);
 	})
 })(jQuery);

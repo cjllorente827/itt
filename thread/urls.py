@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from home.util import method_dispatch
-from thread import views
+from thread import views, api
 
 """
 Url pattern matching convention distinguishes between page view requests and REST calls
@@ -21,11 +21,11 @@ urlpatterns = patterns('',
 		method_dispatch(GET = views.view_thread)),
 	url(
 		r'^api/thread/(?P<thread_id>\d+)$',
-		method_dispatch(GET = views.read_thread)),
+		method_dispatch(GET = api.read_thread)),
 	url(
 		r'^api/thread/(?P<thread_id>\d+)/messages$',  
-		method_dispatch(GET = views.read_thread_messages)),
+		method_dispatch(GET = api.read_thread_messages)),
 	url(
 		r'^api/message$',  
-		method_dispatch(POST = views.create_message)),
+		method_dispatch(POST = api.create_message)),
 )

@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from thread.models import Thread, Message
+from thread import controller
 
 def index(request):
     return HttpResponseRedirect('/') if not request.user.is_authenticated() else render(
         request, 
         'thread/index.html', {
-            'threads' : Thread.objects.filter(people__pk=request.user.pk),
+            'threads' : controller.get_user_threads(request.user.pk),
         })
 
 def view_thread(request, thread_id):
@@ -15,7 +16,7 @@ def view_thread(request, thread_id):
         request, 
         'thread/view_thread.html', {
             'js_files'  : ["/static/thread/js/thread.js"],
-            'thread'    : Thread.objects.get(pk=thread_id),
-            'messages'  : Message.objects.filter(thread=thread_id),
+            'thread'    : controller.get_thread(thread_id),
+            'messages'  : controller.get_thread_messages(thread_id, 10),
         })
 

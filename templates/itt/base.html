@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load staticfiles %}
+	{% load staticfiles %}
 
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/reset.css" />
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
-    {% block stylesheets %}{%endblock%}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
+	{% block stylesheets %}{%endblock%}
 
-    <script src="{{ STATIC_URL }}js/jQuery_1_11.js" ></script>
-    <script src="{{ STATIC_URL }}js/jquery.cookie.js" ></script>
-    <script>
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-                }
-            }
-        });
-    </script>
-    {% for js in js_files %}
-        <script src="{{ js }}"></script>
-    {% endfor %}
+	<script src="{{ STATIC_URL }}js/jQuery_1_11.js" ></script>
+	<script src="{{ STATIC_URL }}js/jquery.cookie.js" ></script>
+	<script>
+		function csrfSafeMethod(method) {
+			return method == 'GET';
+		}
+		
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+				if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+					xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+				}
+			}
+		});
+	</script>
+	{% for js in js_files %}
+		<script src="{{ js }}"></script>
+	{% endfor %}
 
-    <title>{% block title %}This page needs a title{% endblock %}</title>
+	<title>{% block title %}This page needs a title{% endblock %}</title>
 </head>
 
 <body>
 
-    <div id="root">
+	<div id="root">
 
-        <div id="topNavBar" class="panel">
-            <h1>ITT:</h1>
+		<div id="topNavBar" class="panel">
+			<h1>ITT:</h1>
 
-            {% include "registration/auth_panel.html" %}
-        </div>
-        
-        {% block content %}{% endblock %}
+		</div>
+		
+		{% block content %}{% endblock %}
+		
+		{% include "authorization/view_auth.html" %}
+		
 </body>
 </html>

@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
-from registration import views
+from authorization import views, api
+from home.util import method_dispatch
 
 """
 Url pattern matching convention distinguishes between page view requests and REST calls
@@ -11,8 +12,14 @@ REST calls MUST be prefixed with 'api' and can use one of GET, POST, PUT, or DEL
 that begins with 'read_', 'create_', 'update_', or 'delete_', respectively.
 """
 
-urlpatterns = patterns(
-    url(r'^register$', views.user_register, name='register'),
-    url(r'^login$', views.user_login, name='login'),
-    url(r'^logout$', views.user_logout, name='logout'),
+urlpatterns = patterns('auth',
+	url(
+		r'^api/login$', 
+		method_dispatch(POST=api.user_login)),
+	url(
+		r'^api/logout$', 
+		method_dispatch(GET=api.user_logout)),
+	url(
+		r'^api/register$', 
+		method_dispatch(POST=api.create_user)),
 )

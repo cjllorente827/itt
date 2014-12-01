@@ -12,6 +12,6 @@ that begins with 'read_', 'create_', 'update_', or 'delete_', respectively.
 #change this!!!
 # from app_name import views
 
-# urlpatterns = patterns('',
+# urlpatterns = patterns('u',
 #     url(r'^$', views.index, name='index'),
 # )

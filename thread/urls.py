@@ -12,7 +12,7 @@ REST calls MUST be prefixed with 'api' and can use one of GET, POST, PUT, or DEL
 that begins with 'read_', 'create_', 'update_', or 'delete_', respectively.
 """
 
-urlpatterns = patterns('',
+urlpatterns = patterns('t',
 	url(
 		r'^$', 
 		views.index),
@@ -28,4 +28,7 @@ urlpatterns = patterns('',
 	url(
 		r'^api/message$',  
 		method_dispatch(POST = api.create_message)),
+	url(
+		r'^api/test$',  
+		method_dispatch(GET = api.test_websocket)),
 )

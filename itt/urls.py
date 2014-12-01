@@ -4,10 +4,20 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	url(r'^', include('home.urls', namespace="home")),
-    url(r'^r/', include('registration.urls', namespace="registration")),
-	url(r'^t/', include('thread.urls', namespace="thread")),
-	url(r'^u/', include('user.urls', namespace="user")),
-    url(r'^admin/', include(admin.site.urls)),
+	url(
+		r'^', 
+		include('home.urls', namespace="home")),
+    url(
+    	r'^auth/', 
+    	include('authorization.urls', namespace="authorization")),
+	url(
+		r'^t/', 
+		include('thread.urls', namespace="thread")),
+	url(
+		r'^u/', 
+		include('user.urls', namespace="user")),
+    url(
+    	r'^admin/', 
+    	include(admin.site.urls)),
 )
 

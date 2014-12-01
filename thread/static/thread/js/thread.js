@@ -20,7 +20,10 @@
 			}),
 			success : function(response, status, xhr) {
 				refresh(response);
-			}
+			},
+			error : function(xhr, status, error){
+				console.error(status + ' '  + error);
+			} 
 		});
 	}
 

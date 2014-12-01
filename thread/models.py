@@ -24,8 +24,7 @@ class Message(models.Model):
 			text=body["messageBody"], 
 			thread=Thread(id=body["threadId"]), 
 			author=User(id=request.user.id), 
-			timestamp=datetime.now()
-		)
+			timestamp=datetime.now())
 		new_msg.full_clean()
 		return new_msg
 

@@ -1,5 +1,6 @@
+from django.utils import timezone
 
-import datetime
+from datetime import datetime
 
 from thread.models import Thread, Message
 
@@ -14,3 +15,14 @@ def get_thread_messages(thread_id, limit):
 			.filter(thread=thread_id)
 			.order_by('-timestamp')
 			[:limit:-1]) #get bottom of list
+
+def get_new_thread_messages(thread_id, limit, timestamp):
+	timestamp = timezone.make_aware(timestamp, timezone.get_current_timezone())
+	messages = get_thread_messages(thread_id, limit)
+	print(str(timestamp))
+	print(str(messages[9].timestamp))
+	
+	for m in messages[::-1]:
+		if(m.timestamp > timestamp):
+			return messages
+	return None

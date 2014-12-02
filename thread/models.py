@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
-from datetime import datetime
 import json
 
 class Thread(models.Model):
@@ -24,7 +24,7 @@ class Message(models.Model):
 			text=body["messageBody"], 
 			thread=Thread(id=body["threadId"]), 
 			author=User(id=request.user.id), 
-			timestamp=datetime.now())
+			timestamp=timezone.now())
 		new_msg.full_clean()
 		return new_msg
 

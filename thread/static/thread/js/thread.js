@@ -1,12 +1,20 @@
 
 (function($){
 
+	//http status codes
+	var HTTP_OK = "success",
+		HTTP_NOT_MODIFIED = "notmodified";
+
+
+	var POLL_INTERVAL = 3000; //3 second poll time
+
+
 	var messageTextArea,
 		messageSendButton,
 		csrfToken,
 		threadId;
 
-	function sendMessage(){
+	function createMessage(){
 		var text = messageTextArea.val()
 		if(text == "") return;
 
@@ -19,7 +27,7 @@
 				"messageBody": text
 			}),
 			success : function(response, status, xhr) {
-				refresh(response);
+				redrawMessageList(response);
 			},
 			error : function(xhr, status, error){
 				console.error(status + ' '  + error);
@@ -27,8 +35,24 @@
 		});
 	}
 
-	function refresh(messageData){
+	function redrawMessageList(messageData){
 		messageList.html(messageData);
+	}
+
+	function pollMessages(){
+		$.ajax({
+			method : "GET",
+			url : "api/thread/"+threadId+"/messages/"+(Date.now()-POLL_INTERVAL),
+			success : function(response, status, xhr) {
+				console.debug(status);
+				if(status == HTTP_OK){
+					redrawMessageList(response);
+				}
+			},
+			error : function(xhr, status, error){
+				console.error(status + ' '  + error);
+			} 
+		});
 	}
 
 	$(function() {
@@ -36,6 +60,8 @@
 		messageTextArea 	= $('#message');
 		messageSendButton 	= $('#messageSend');
 		messageList 		= $('#messageList');
-		messageSendButton.click(sendMessage);
+		messageSendButton.click(createMessage);
+
+		setInterval(pollMessages, POLL_INTERVAL);
 	})
 })(jQuery);

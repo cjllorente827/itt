@@ -26,9 +26,9 @@ urlpatterns = patterns('t',
 		r'^api/thread/(?P<thread_id>\d+)/messages$',  
 		method_dispatch(GET = api.read_thread_messages)),
 	url(
+		r'^api/thread/(?P<thread_id>\d+)/messages/(?P<timestamp>\d+)$',  
+		method_dispatch(GET = api.read_new_thread_messages)),
+	url(
 		r'^api/message$',  
 		method_dispatch(POST = api.create_message)),
-	url(
-		r'^api/test$',  
-		method_dispatch(GET = api.test_websocket)),
 )

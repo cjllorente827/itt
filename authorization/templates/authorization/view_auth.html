@@ -1,19 +1,29 @@
-{% block title %}{% endblock %}
+{% comment %} 
 
-{% block content %}
+	-- Render attributes --
 
-    <div id="authentication">
-        {% if user.is_authenticated %}
-            <h3>Hi, {{ user.username }}!</h3>
-            <a href="/auth/api/logout">Logout</a>
-        {% else %}
-            <form action="/auth/api/login" method="post">
-                <input type="text" placeholder="username" name="username"/>
-                <input type="password" placeholder="password" name="password"/>
-                {% csrf_token %}
-                <input type="submit" value="login" />
-            </form>    
-        {% endif %}
-    </div>
+{% endcomment %}
 
-{% endblock %}
+<div id="authentication">
+	{% if user.is_authenticated %}
+		<h3>Hi, {{ user.username }}!</h3>
+		<a href="/auth/api/logout">Logout</a>
+	{% else %}
+		
+		<form action="/auth/api/login" method="post">
+			{% csrf_token %}
+			<input type="text" placeholder="username" name="username"/>
+			<input type="password" placeholder="password" name="password"/>
+			<input type="submit" value="sign in" />
+		</form><br/>
+
+		
+		<form action="/auth/api/register" method="post">
+			{% csrf_token %}
+			<input type="text" placeholder="username" name="username"/>
+			<input type="password" placeholder="password" name="password"/>
+			<input type="password" placeholder="re-enter password" name="password2"/>
+			<input type="submit" value="sign up" />
+		</form>
+	{% endif %}
+</div>

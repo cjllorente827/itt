@@ -2,14 +2,13 @@
 (function($){
 
 	//http status codes
-	var HTTP_OK = "success",
+	var 	HTTP_OK = "success",
 		HTTP_NOT_MODIFIED = "notmodified";
 
 	var POLL_INTERVAL = 3000; //3 second poll time
 
-	var messageTextArea,
+	var 	messageTextArea,
 		messageSendButton,
-		csrfToken,
 		threadId;
 
 	function createMessage(){
@@ -54,12 +53,12 @@
 	}
 
 	$(function() {
-		threadId 			= $('#threadId').val();
-		messageTextArea 	= $('#message');
-		messageSendButton 	= $('#messageSend');
+		threadId 		= $('#threadId').val();
+		messageTextArea 	= $('#messageTextArea');
+		messageSendButton 	= $('#messageSendButton');
 		messageList 		= $('#messageList');
 		messageSendButton.click(createMessage);
 
-		setInterval(pollMessages, POLL_INTERVAL);
+		//setInterval(pollMessages, POLL_INTERVAL);
 	})
 })(jQuery);

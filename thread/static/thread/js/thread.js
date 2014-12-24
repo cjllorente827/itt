@@ -5,9 +5,7 @@
 	var HTTP_OK = "success",
 		HTTP_NOT_MODIFIED = "notmodified";
 
-
 	var POLL_INTERVAL = 3000; //3 second poll time
-
 
 	var messageTextArea,
 		messageSendButton,

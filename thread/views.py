@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from thread.models import Thread, Message
-from thread import controller
+from thread import controller, api
 
 def index(request):
     return HttpResponseRedirect('/') if not request.user.is_authenticated() else render(

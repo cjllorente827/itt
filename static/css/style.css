@@ -6,9 +6,9 @@ body{
 }
 
 div{
-	margin-bottom:7px;
+	position: relative;
+	padding:3px;
 }
-
 
 div.center{
 	width: 80%;
@@ -30,20 +30,56 @@ div.left{
 
 div.list h1,
 div.list p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: '...';
 	margin-bottom: 5px;
 }
 
 div.panel{
-	position: relative;
 	background : #fff;
-	-webkit-box-shadow: 1px 1px 5px #777;
-	-moz-box-shadow: 1px 1px 5px #777;
-	box-shadow: 1px 1px 5px #777;
-	padding:3px;
+	-webkit-box-shadow: 5px 5px 5px 0px rgba(119,119,119,1);
+	-moz-box-shadow: 5px 5px 5px 0px rgba(119,119,119,1);
+	box-shadow: 5px 5px 5px 0px rgba(119,119,119,1);
+	margin-bottom:7px;
 }
 
 div.tabmenu{
-	height: 5%;
+	padding: 0px;
+	height: 40px;
+}
+
+div.tab{
+	margin-right: 3px;
+	display: inline-block;
+	height: 100%;
+	width: 150px;
+	background-color: #999;
+
+}
+
+div.tab p{
+	cursor: pointer;
+	padding: 3px;
+	font-size: 1.0em;
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: '...';
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+div.tab button{
+	position: absolute;
+	right:0;
+}
+
+div.active{
+	background-color: #fff;
 }
 
 div#authentication{
@@ -51,9 +87,15 @@ div#authentication{
 }
 
 div#messageResponse{
+	width: 100%;
 	position: absolute;
-	left:40%;
 	bottom:0;
+}
+
+div#messageResponse textarea{
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 div#root{
@@ -62,7 +104,6 @@ div#root{
 	height:100%;
 	margin:auto;
 	background : #ccc;
-	/*box-shadow: 5px 5px 5px #999, -5px 5px 5px #999;*/
 }
 
 div#tabs{

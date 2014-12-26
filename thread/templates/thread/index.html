@@ -17,8 +17,16 @@
 		</ul>
 	</div>
 
-	<div id="main" class="center">
-		
+	<div id="main" class="center" style="display:none;">
+		<div id="tabs" class="tabmenu"></div>
+		<div id="messages" class="chat panel">
+			<ul id="messageList"></ul>
+			<div id="messageResponse">
+				<textarea id="messageTextArea" rows="4" cols="50"></textarea>
+				<input id="threadId" type="hidden" value="{{ thread.id }}"/>
+				<button id="messageSendButton">Send</button>
+			</div>
+		</div>
 	</div>
 	
 {% endblock %}

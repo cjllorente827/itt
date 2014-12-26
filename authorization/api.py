@@ -36,4 +36,11 @@ def create_user(request):
 	user = User.objects.create_user(form['username'], None, form['password'])
 	user.save()
 	
-	return HttpResponse(''.join(['User ', user.username, ' created']), None, 201)
+	user = authenticate(
+		username=form['username'], 
+		password=form['password'])
+
+	if user is not None and user.is_active:
+		login(request, user)
+		return HttpResponseRedirect('/t')
+	return HttpResponse('Invalid username or password', None, 200)

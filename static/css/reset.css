@@ -33,6 +33,16 @@ body {
 	height: 100%;
 	line-height: 1;
 }
+
+button{
+	background: none;
+	border: 0;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
 ol, ul {
 	list-style: none;
 }

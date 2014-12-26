@@ -16,9 +16,9 @@ urlpatterns = patterns('t',
 	url(
 		r'^$', 
 		views.index),
-	url(
-		r'^(?P<thread_id>\d+)$',  
-		method_dispatch(GET = views.view_thread)),
+	# url(
+	# 	r'^(?P<thread_id>\d+)$',  
+	# 	method_dispatch(GET = views.view_thread)),
 	url(
 		r'^api/thread/(?P<thread_id>\d+)$',
 		method_dispatch(GET = api.read_thread)),

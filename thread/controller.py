@@ -18,9 +18,7 @@ def get_thread_messages(thread_id, limit):
 
 def get_new_thread_messages(thread_id, limit, timestamp):
 	timestamp = timezone.make_aware(timestamp, timezone.get_current_timezone())
-	messages = get_thread_messages(thread_id, limit)
-	print(str(timestamp))
-	print(str(messages[9].timestamp))
+	messages = get_thread_messages(thread_id, limit)	
 	
 	for m in messages[::-1]:
 		if(m.timestamp > timestamp):

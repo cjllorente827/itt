@@ -35,12 +35,10 @@
 
 		<div id="topNavBar" class="panel">
 			<h1>ITT:</h1>
-
+			{% include "authorization/view_auth.html" %}
 		</div>
 		
 		{% block content %}{% endblock %}
-		
-		{% include "authorization/view_auth.html" %}
 		
 </body>
 </html>

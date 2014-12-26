@@ -4,14 +4,29 @@
 {% block title %}Threads{% endblock %}
 
 {% block content %}
-	
-		{% for t in threads %}
-		<div class="column thread panel"> 
-			<h1 class="titleFont"><a href="{{t.id}}">{{t.topic}}</a></h1>
-		</div>
-		{% endfor %}
-		<div class="column thread panel"> 
-			<h1 class="titleFont"><a href="#">Create New Thread</a></h1>
-		</div>
+		
+	<div id="channels" class="list left panel"> 
+		<h1 class="titleFont"> + <a href="#">Create New</a></h1>
+		<ul id="channelsList">
+			{% for t in threads %}
+				<p>&gt; <a id="channel_{{t.id}}" href="javascript:void(0);">
+					{{t.topic}}
+					</a>
+				</p>
+			{% endfor %}
+		</ul>
+	</div>
 
+	<div id="main" class="center" style="display:none;">
+		<div id="tabs" class="tabmenu"></div>
+		<div id="messages" class="chat panel">
+			<ul id="messageList"></ul>
+			<div id="messageResponse">
+				<textarea id="messageTextArea" rows="4" cols="50"></textarea>
+				<input id="threadId" type="hidden" value="{{ thread.id }}"/>
+				<button id="messageSendButton">Send</button>
+			</div>
+		</div>
+	</div>
+	
 {% endblock %}

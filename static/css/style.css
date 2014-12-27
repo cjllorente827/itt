@@ -116,11 +116,11 @@ div#topNavBar{
 	width: 100%;
 }
 
-.author_font{
+.author{
 	color:#00f;
 }
 
-.timestamp_font{
+.timestamp{
 	color:#777;
 	margin-left:60%;
 }

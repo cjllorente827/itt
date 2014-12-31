@@ -16,10 +16,10 @@ currentChannel = 0;
 
 		$.ajax({
 			method : "POST",
-			url : "/t/api/message",
+			url : "/c/api/message",
 			contentType: "application/json",
 			data: JSON.stringify({
-				"threadId" : currentChannel,
+				"channelId" : currentChannel,
 				"messageBody": text
 			}),
 			success : function(response, status, xhr) {
@@ -33,9 +33,12 @@ currentChannel = 0;
 	}
 
 	function pollMessages(){
+		if(!currentChannel){
+			return;
+		}
 		$.ajax({
 			method : "GET",
-			url : "/t/api/thread/"+currentChannel+"/messages/"+(Date.now()-POLL_INTERVAL),
+			url : "http://localhost:8001/c/api/channel/"+currentChannel+"/messages/"+(Date.now()-POLL_INTERVAL),
 			success : function(response, status, xhr) {
 				console.debug(status);
 				if(status == HTTP_OK){
@@ -54,6 +57,6 @@ currentChannel = 0;
 		messageList 		= $('#messageList');
 		messageSendButton.click(createMessage);
 
-		//setInterval(pollMessages, POLL_INTERVAL);
+		setInterval(pollMessages, POLL_INTERVAL);
 	})
 })(jQuery);

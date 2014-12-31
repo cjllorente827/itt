@@ -34,7 +34,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authorization',
-    'thread',
+    'channel',
     'user',
 )
 

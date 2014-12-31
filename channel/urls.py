@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from home.util import method_dispatch
-from thread import views, api
+from channel import views, api
 
 """
 Url pattern matching convention distinguishes between page view requests and REST calls
@@ -12,22 +12,19 @@ REST calls MUST be prefixed with 'api' and can use one of GET, POST, PUT, or DEL
 that begins with 'read_', 'create_', 'update_', or 'delete_', respectively.
 """
 
-urlpatterns = patterns('t',
+urlpatterns = patterns('c',
 	url(
 		r'^$', 
 		views.index),
-	# url(
-	# 	r'^(?P<thread_id>\d+)$',  
-	# 	method_dispatch(GET = views.view_thread)),
 	url(
-		r'^api/thread/(?P<thread_id>\d+)$',
-		method_dispatch(GET = api.read_thread)),
+		r'^api/channel/(?P<channel_id>\d+)$',
+		method_dispatch(GET = api.read_channel)),
 	url(
-		r'^api/thread/(?P<thread_id>\d+)/messages$',  
-		method_dispatch(GET = api.read_thread_messages)),
+		r'^api/channel/(?P<channel_id>\d+)/messages$',  
+		method_dispatch(GET = api.read_channel_messages)),
 	url(
-		r'^api/thread/(?P<thread_id>\d+)/messages/(?P<timestamp>\d+)$',  
-		method_dispatch(GET = api.read_new_thread_messages)),
+		r'^api/channel/(?P<channel_id>\d+)/messages/(?P<timestamp>\d+)$',  
+		method_dispatch(GET = api.read_new_channel_messages)),
 	url(
 		r'^api/message$',  
 		method_dispatch(POST = api.create_message)),

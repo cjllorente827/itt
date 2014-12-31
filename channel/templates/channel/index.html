@@ -1,16 +1,16 @@
 
 {% extends "itt/base.html" %}
 
-{% block title %}Threads{% endblock %}
+{% block title %}Channels{% endblock %}
 
 {% block content %}
 		
 	<div id="channels" class="list left panel"> 
 		<h1 class="titleFont"> + <a href="#">Create New</a></h1>
 		<ul id="channelsList">
-			{% for t in threads %}
-				<p>&gt; <a id="channel_{{t.id}}" href="javascript:void(0);">
-					{{t.topic}}
+			{% for c in channels %}
+				<p>&gt; <a id="channel_{{c.id}}" href="javascript:void(0);">
+					{{c.name}}
 					</a>
 				</p>
 			{% endfor %}
@@ -23,7 +23,7 @@
 			<ul id="messageList"></ul>
 			<div id="messageResponse">
 				<textarea id="messageTextArea" rows="4" cols="50"></textarea>
-				<input id="threadId" type="hidden" value="{{ thread.id }}"/>
+				<input id="channelId" type="hidden" value="{{ channel.id }}"/>
 				<button id="messageSendButton">Send</button>
 			</div>
 		</div>

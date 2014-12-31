@@ -8,7 +8,7 @@
 	function changeChannel(channelId){
 		$.ajax({
 			method : "GET",
-			url : "/t/api/thread/"+channelId+"/messages",
+			url : "/c/api/channel/"+channelId+"/messages",
 			contentType: "application/json",
 			success : function(response, status, xhr) {
 				currentChannel = channelId;
@@ -61,10 +61,14 @@
 	function closeTab(channelId){
 		var removedTab = $('#tab_'+channelId).remove();
 		delete tabIsOpen[channelId];
-		if(removedTab.hasClass('active')){
+		if(Object.keys(tabIsOpen).length === 0){
+			main.hide();
+			currentChannel = false;
+		}
+		else if(removedTab.hasClass('active')){
 			for(var key in tabIsOpen){
 				gotoTab(key);
-				break;
+				return;
 			}
 		}
 	}

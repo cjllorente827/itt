@@ -11,8 +11,8 @@ urlpatterns = patterns('',
 		r'^auth/', 
 		include('authorization.urls', namespace="authorization")),
 	url(
-		r'^t/', 
-		include('thread.urls', namespace="thread")),
+		r'^c/', 
+		include('channel.urls', namespace="channel")),
 	url(
 		r'^u/', 
 		include('user.urls', namespace="user")),

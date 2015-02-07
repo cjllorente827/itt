@@ -14,6 +14,22 @@ var channelController = (function($){
 	var connection = null;
 	function changeChannel(channelId){
 		currentChannel = channelId;
+
+		$.ajax({
+			url : '/c/api/channel/'+currentChannel+'/messages',
+			method : 'GET',
+			success : function(response, status, xhr){
+				console.log(response);
+				if(status == HTTP_OK){
+					messageList.append(response);
+				}
+				else{
+					console.log(status);
+					console.log(response);
+				}
+			}
+		})
+
 		if(!connection){
 			connection = new WebSocket(WS_URL+channelId);
 
@@ -50,12 +66,13 @@ var channelController = (function($){
 		if (!text) {
 			return;
 		}
-		console.log('Attempting to send message: ' + text);
+
+		var now = new Date(Date.now());
 
 		var msg = {
-			opId :  3,
+			opId :  getCookie('username'),
 			channelId : currentChannel,
-			timestamp : 10000000,
+			timestamp : now.toLocaleString(),
 			text : text
 		}
 

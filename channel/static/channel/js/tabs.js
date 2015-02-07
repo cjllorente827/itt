@@ -45,6 +45,7 @@
 
 	function closeTab(channelId){
 		var removedTab = $('#tab_'+channelId).remove();
+		messageList.empty();
 		delete tabIsOpen[channelId];
 		if(Object.keys(tabIsOpen).length === 0){
 			main.hide();

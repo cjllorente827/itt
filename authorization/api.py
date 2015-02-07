@@ -8,7 +8,6 @@ import json
 from authorization.forms import LoginForm, RegisterForm
 
 def user_login(request):	
-	print(request.POST)
 	form = LoginForm(request.POST).get_validation()
 
 	if not form["valid"]:
@@ -20,8 +19,8 @@ def user_login(request):
 
 	if user is not None and user.is_active:
 		login(request, user)
-		return HttpResponseRedirect('/t')
-	return HttpResponse('Invalid username or password', None, 200)
+		return login_success(user.username)
+	return login_failure()
 
 def user_logout(request):
 	logout(request)
@@ -42,5 +41,15 @@ def create_user(request):
 
 	if user is not None and user.is_active:
 		login(request, user)
-		return HttpResponseRedirect('/t')
+		return login_success(user.username)
+	return login_failure()
+
+def login_success(username):
+	response = HttpResponseRedirect('/c')
+	response.set_cookie('username', username)
+	return response
+
+def login_failure():
 	return HttpResponse('Invalid username or password', None, 200)
+
+	

@@ -4,3 +4,5 @@
 *.png
 *.gif
 itt/settings.py
+nodejs/node_modules
+nodejs/npm-debug.log

@@ -1,6 +1,0 @@
-BEGIN;
-DROP TABLE "thread_message";
-DROP TABLE "thread_thread";
-DROP TABLE "thread_thread_people";
-
-COMMIT;

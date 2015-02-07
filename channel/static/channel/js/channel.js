@@ -1,62 +1,107 @@
-currentChannel = 0;
-(function($){
+var channelController = (function($){
+
+	var WS_URL = 'ws://127.0.0.1:8001/';
+	window.WebSocket = window.WebSocket || window.MozWebSocket;
 
 	//http status codes
 	var HTTP_OK = "success",
 		HTTP_NOT_MODIFIED = "notmodified";
 
-	var POLL_INTERVAL = 3000; //3 second poll time
-
 	var messageTextArea,
 		messageSendButton;
-
-	function createMessage(){
-		var text = messageTextArea.val();
-		if(text == "") return;
+		
+	var currentChannel = 0;
+	var connection = null;
+	function changeChannel(channelId){
+		currentChannel = channelId;
 
 		$.ajax({
-			method : "POST",
-			url : "/c/api/message",
-			contentType: "application/json",
-			data: JSON.stringify({
-				"channelId" : currentChannel,
-				"messageBody": text
-			}),
-			success : function(response, status, xhr) {
-				messageList.html(response);
-				messageTextArea.val('');
-			},
-			error : function(xhr, status, error){
-				console.error(status + ' '  + error);
-			} 
-		});
+			url : '/c/api/channel/'+currentChannel+'/messages',
+			method : 'GET',
+			success : function(response, status, xhr){
+				console.log(response);
+				if(status == HTTP_OK){
+					messageList.append(response);
+				}
+				else{
+					console.log(status);
+					console.log(response);
+				}
+			}
+		})
+
+		if(!connection){
+			connection = new WebSocket(WS_URL+channelId);
+
+			connection.onopen = function(){
+				console.log('Connection opened');
+			};
+
+			connection.onclose = function(){
+				console.log('Connection closed');
+			};
+
+			connection.onerror = function(error){
+				console.error('An error occurred establishing the connection');
+				console.error(error);
+			}
+
+			connection.onmessage = function(message){
+				try{
+					var data = JSON.parse(message.data);
+					console.log(data);
+					messageList.append(data.html);
+					messageTextArea.removeAttr('disabled');
+					messageSendButton.removeAttr('disabled');
+				}
+				catch(e){
+					console.error('Invalid JSON sent from endpoint.');
+					console.error(message.data);
+				}
+			}
+		}
 	}
 
-	function pollMessages(){
-		if(!currentChannel){
+	function sendMessage(text){
+		if (!text) {
 			return;
 		}
-		$.ajax({
-			method : "GET",
-			url : "http://localhost:8001/c/api/channel/"+currentChannel+"/messages/"+(Date.now()-POLL_INTERVAL),
-			success : function(response, status, xhr) {
-				console.debug(status);
-				if(status == HTTP_OK){
-					redrawMessageList(response);
-				}
-			},
-			error : function(xhr, status, error){
-				console.error(status + ' '  + error);
-			} 
-		});
+
+		var now = new Date(Date.now());
+
+		var msg = {
+			opId :  getCookie('username'),
+			channelId : currentChannel,
+			timestamp : now.toLocaleString(),
+			text : text
+		}
+
+		if(connection){
+			connection.send(JSON.stringify(msg));
+		}
+
+		messageTextArea.val('');
+		messageTextArea.attr('disabled', 'disabled');
+		messageSendButton.attr('disabled', 'disabled');
 	}
 
 	$(function() {
 		messageTextArea 	= $('#messageTextArea');
 		messageSendButton 	= $('#messageSendButton');
 		messageList 		= $('#messageList');
-		messageSendButton.click(createMessage);
 
-		setInterval(pollMessages, POLL_INTERVAL);
+		messageSendButton.click(function(){
+			sendMessage(messageTextArea.val());
+		});
+
+		messageTextArea.keydown(function(e) {
+			if (e.keyCode === 13) {
+				sendMessage(messageTextArea.val());
+			}
+		});
 	})
+
+	return {
+		changeChannel: changeChannel
+	}
 })(jQuery);

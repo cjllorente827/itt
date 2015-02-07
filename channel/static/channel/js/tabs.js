@@ -5,21 +5,6 @@
 		tabs,
 		main;
 
-	function changeChannel(channelId){
-		$.ajax({
-			method : "GET",
-			url : "/c/api/channel/"+channelId+"/messages",
-			contentType: "application/json",
-			success : function(response, status, xhr) {
-				currentChannel = channelId;
-				messageList.html(response);
-			},
-			error : function(xhr, status, error){
-				console.error(status + ' '  + error);
-			} 
-		});
-	}
-
 	function openTab(channelId, channelTitle){
 		if(!tabIsOpen[channelId]){
 			main.show();
@@ -55,11 +40,12 @@
 	function gotoTab(channelId){
 		tabs.children(".active").removeClass("active");
 		tabs.children("#tab_"+channelId).addClass("active");
-		changeChannel(channelId);
+		channelController.changeChannel(channelId);
 	}
 
 	function closeTab(channelId){
 		var removedTab = $('#tab_'+channelId).remove();
+		messageList.empty();
 		delete tabIsOpen[channelId];
 		if(Object.keys(tabIsOpen).length === 0){
 			main.hide();

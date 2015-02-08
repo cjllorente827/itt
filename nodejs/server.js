@@ -4,23 +4,27 @@
 var http = require('http'),
 	sqlite3 = require('sqlite3').verbose(),
 	websocket = require('websocket').server,
-	channelController = require('./channelController')();
+	channelController = require('./channelController')(),
+	Settings = require('./settings')();
 
-//Constants
-var IP_ADDR = '127.0.0.1',
-	PORT 	= 8001,
-	DB_MODE = sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
-	DB_URL = 'C:\\Users\\CJ\\Projects\\itt\\db.sqlite3';
 
-var db = new sqlite3.Database(DB_URL, DB_MODE, db_log);
+var db = new sqlite3.Database(Settings.DatabaseUrl, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, function(error){
+	if(error){
+		console.error(error);
+	}
+});
 
 var server = http.createServer(function (request, response) {
 	console.log(request);
-}).listen(PORT, IP_ADDR);
+}).listen(Settings.Port, Settings.Address);
 
 var ws = new websocket({
     httpServer: server
 });
+
+var writeSQL = 'INSERT INTO channel_message \
+				(text, channel_id, timestamp, op_id) \
+				VALUES ($text, $channelId, $timestamp, $opId)';
 
 ws.on('request', function(request){
 	var conn = request.accept(null, request.origin);
@@ -29,7 +33,14 @@ ws.on('request', function(request){
 		if(msg.type === 'utf8'){
 			console.log('Message received');
 			console.log(msg);
-			channelController.sendMessage(JSON.parse(msg.utf8Data));
+			msg = JSON.parse(msg.utf8Data);
+			db.run(writeSQL, {
+				$text : msg.text,
+				$channelId : msg.channelId,
+				$timestamp : msg.timestamp,
+				$opId : msg.opId
+			});
+			channelController.sendMessage(msg);
 		}
 		else{
 			console.log('Message was not UTF 8');
@@ -42,12 +53,6 @@ ws.on('request', function(request){
 
 	channelController.addConnection(request.resource.replace('/', ''), conn);
 });
-
-function db_log(err){
-	if(err){
-		console.error(err);
-	}
-}
 
 // function getMessages(response, channelId, timestamp){
 	
@@ -85,5 +90,5 @@ function db_log(err){
 // 	return result;
 // }
 
-console.log('Server running at http://'+IP_ADDR+':'+PORT);
+console.log('Server running at http://' + Settings.Address + ':' + Settings.Port);
 

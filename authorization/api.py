@@ -19,7 +19,7 @@ def user_login(request):
 
 	if user is not None and user.is_active:
 		login(request, user)
-		return login_success(user.username)
+		return login_success(user)
 	return login_failure()
 
 def user_logout(request):
@@ -41,12 +41,13 @@ def create_user(request):
 
 	if user is not None and user.is_active:
 		login(request, user)
-		return login_success(user.username)
+		return login_success(user)
 	return login_failure()
 
-def login_success(username):
+def login_success(user):
 	response = HttpResponseRedirect('/c')
-	response.set_cookie('username', username)
+	response.set_cookie('username', user.username)
+	response.set_cookie('userId', user.id)
 	return response
 
 def login_failure():

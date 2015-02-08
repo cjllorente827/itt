@@ -1,6 +1,5 @@
 var channelController = (function($){
 
-	var WS_URL = 'ws://127.0.0.1:8001/';
 	window.WebSocket = window.WebSocket || window.MozWebSocket;
 
 	//http status codes
@@ -31,7 +30,7 @@ var channelController = (function($){
 		})
 
 		if(!connection){
-			connection = new WebSocket(WS_URL+channelId);
+			connection = new WebSocket(Settings.WebSocketURL+channelId);
 
 			connection.onopen = function(){
 				console.log('Connection opened');
@@ -70,7 +69,8 @@ var channelController = (function($){
 		var now = new Date(Date.now());
 
 		var msg = {
-			opId :  getCookie('username'),
+			opName :  getCookie('username'),
+			opId : getCookie('userId'),
 			channelId : currentChannel,
 			timestamp : now.toLocaleString(),
 			text : text

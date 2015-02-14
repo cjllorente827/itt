@@ -22,9 +22,9 @@ var ws = new websocket({
     httpServer: server
 });
 
-var writeSQL = 'INSERT INTO channel_message \
+var writeSQL = "INSERT INTO channel_message \
 				(text, channel_id, timestamp, op_id) \
-				VALUES ($text, $channelId, $timestamp, $opId)';
+				VALUES ($text, $channelId, datetime('now'), $opId)";
 
 ws.on('request', function(request){
 	var conn = request.accept(null, request.origin);
@@ -37,7 +37,6 @@ ws.on('request', function(request){
 			db.run(writeSQL, {
 				$text : msg.text,
 				$channelId : msg.channelId,
-				$timestamp : msg.timestamp,
 				$opId : msg.opId
 			});
 			channelController.sendMessage(msg);

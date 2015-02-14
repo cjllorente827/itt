@@ -46,8 +46,8 @@ def create_user(request):
 
 def login_success(user):
 	response = HttpResponseRedirect('/c')
-	response.set_cookie('username', user.username)
-	response.set_cookie('userId', user.id)
+	response.set_cookie('username', user.username, 60*60*24*365)
+	response.set_cookie('userId', user.id, 60*60*24*365)
 	return response
 
 def login_failure():

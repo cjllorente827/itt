@@ -33,9 +33,8 @@ module.exports = function(){
 
 			var message = JSON.stringify({
 				error: null,
-				html:'<span class="author">'+msg.opId+
-					 '</span><span class="timestamp">'+msg.timestamp+
-					 '</span><p>'+msg.text+'</p>'
+				content: msg,
+				timestamp: Date.now()
 			});
 
 			var conn = head;

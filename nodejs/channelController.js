@@ -1,5 +1,6 @@
 
 module.exports = function(){
+	//Channels use a Linked List structure to track connections to faciliate quick add and removal
 	function Channel(channelId, conn){
 		var id = channelId,
 			head = conn;
@@ -32,9 +33,8 @@ module.exports = function(){
 
 			var message = JSON.stringify({
 				error: null,
-				html:'<span class="author">'+msg.opId+
-					 '</span><span class="timestamp">'+msg.timestamp+
-					 '</span><p>'+msg.text+'</p>'
+				content: msg,
+				timestamp: Date.now()
 			});
 
 			var conn = head;
@@ -52,7 +52,9 @@ module.exports = function(){
 	}
 
 	var channels = {};
-	var messageBuffer = new Array();
+	var messageBuffer = [];
+
+	
 
 	return {
 		addConnection : function(channelId, conn){

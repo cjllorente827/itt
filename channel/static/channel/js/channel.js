@@ -1,11 +1,17 @@
 var channelController = (function($){
 
-	var WS_URL = 'ws://127.0.0.1:8001/';
 	window.WebSocket = window.WebSocket || window.MozWebSocket;
 
 	//http status codes
 	var HTTP_OK = "success",
 		HTTP_NOT_MODIFIED = "notmodified";
+
+	var messageTpl = {
+		author: '<span class="author">',
+		timestamp: '</span><span class="timestamp">',
+		text: '</span><p>', 
+		end: '</p>'
+	};
 
 	var messageTextArea,
 		messageSendButton;
@@ -21,6 +27,7 @@ var channelController = (function($){
 			success : function(response, status, xhr){
 				console.log(response);
 				if(status == HTTP_OK){
+					messageList.empty();
 					messageList.append(response);
 				}
 				else{
@@ -28,10 +35,10 @@ var channelController = (function($){
 					console.log(response);
 				}
 			}
-		})
+		});
 
 		if(!connection){
-			connection = new WebSocket(WS_URL+channelId);
+			connection = new WebSocket(Settings.WebSocketURL+channelId);
 
 			connection.onopen = function(){
 				console.log('Connection opened');
@@ -47,17 +54,20 @@ var channelController = (function($){
 			}
 
 			connection.onmessage = function(message){
+				var data;
 				try{
-					var data = JSON.parse(message.data);
-					console.log(data);
-					messageList.append(data.html);
-					messageTextArea.removeAttr('disabled');
-					messageSendButton.removeAttr('disabled');
+					data = JSON.parse(message.data);
 				}
 				catch(e){
 					console.error('Invalid JSON sent from endpoint.');
 					console.error(message.data);
+					return;
 				}
+
+				var timeString = (new Date(data.timestamp)).toLocaleString();
+				var html = [messageTpl.author, data.content.opName, messageTpl.timestamp, timeString, messageTpl.text, data.content.text, messageTpl.end].join('');
+
+				messageList.append(html);
 			}
 		}
 	}
@@ -67,12 +77,10 @@ var channelController = (function($){
 			return;
 		}
 
-		var now = new Date(Date.now());
-
 		var msg = {
-			opId :  getCookie('username'),
+			opName :  getCookie('username'),
+			opId : getCookie('userId'),
 			channelId : currentChannel,
-			timestamp : now.toLocaleString(),
 			text : text
 		}
 
@@ -81,8 +89,6 @@ var channelController = (function($){
 		}
 
 		messageTextArea.val('');
-		messageTextArea.attr('disabled', 'disabled');
-		messageSendButton.attr('disabled', 'disabled');
 	}
 
 	$(function() {
@@ -94,7 +100,7 @@ var channelController = (function($){
 			sendMessage(messageTextArea.val());
 		});
 
-		messageTextArea.keydown(function(e) {
+		messageTextArea.keyup(function(e) {
 			if (e.keyCode === 13) {
 				sendMessage(messageTextArea.val());
 			}

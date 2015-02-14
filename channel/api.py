@@ -6,7 +6,7 @@ from datetime import datetime
 from channel.models import Message
 from channel import controller
 
-NUM_MESSAGES = 30
+NUM_MESSAGES = 150
 
 def read_channel(request, channel_id):
     return render(

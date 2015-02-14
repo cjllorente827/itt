@@ -55,7 +55,6 @@ div.tab{
 	height: 100%;
 	width: 150px;
 	background-color: #999;
-
 }
 
 div.tab p{
@@ -106,14 +105,15 @@ div#root{
 	background : #ccc;
 }
 
-div#tabs{
-
-}
-
 div#topNavBar{
 	position: relative;
 	height: 75px;
 	width: 100%;
+}
+
+ul#messageList {
+	height : 90%;
+	overflow: auto;
 }
 
 .author{

@@ -3,7 +3,7 @@
 	var messageList,
 		tabIsOpen = {},
 		tabs,
-		main;
+		main; 
 
 	function openTab(channelId, channelTitle){
 		if(!tabIsOpen[channelId]){

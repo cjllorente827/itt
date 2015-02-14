@@ -1,5 +1,7 @@
+{% load channel_filters %}
+
 {% for m in messages %}
 	<span class="author">{{m.op}}</span>
-	<span class="timestamp">{{m.timestamp}}</span>
+	<span class="timestamp">{{m.timestamp|format_datetime:"{d.month}/{d.day}/{d.year}, {d:%I:02}:{d:%M}:{d:%S} {d:%p}"}}</span>
 	<p>{{m.text}}</p>
 {% endfor %}

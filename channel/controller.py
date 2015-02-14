@@ -11,6 +11,7 @@ def get_channel(channel_id):
 	return Channel.objects.get(id=channel_id)
 
 def get_channel_messages(channel_id, limit):
+
 	return (Message.objects
 			.filter(channel=channel_id)
 			.order_by('-timestamp')
